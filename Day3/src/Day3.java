@@ -13,14 +13,17 @@ public class Day3 {
             BufferedReader reader = new BufferedReader(fileIn);
 
             String line;
+            fileLoop:
             while(true) {
-                line = reader.readLine();
-                if(line == null)
-                    break;
-                String firstPart = line.substring(0, line.length()/2);
-                String secondPart = line.substring(line.length()/2);
-                for(char c : firstPart.toCharArray()) {
-                    if(secondPart.contains(String.valueOf(c))) {
+                String[] arr = new String[3];
+                for(int i = 0; i < arr.length; i ++) {
+                    arr[i] = reader.readLine();
+                    if(arr[i] == null)
+                        break fileLoop;
+                }
+                for(char c : arr[0].toCharArray()) {
+                    String valC = String.valueOf(c);
+                    if(arr[1].contains(valC) && arr[2].contains(valC)) {
                         priortiyScore += priorityMap.get(c);
                         break;
                     }
