@@ -20,8 +20,11 @@ public class Main {
                 int lowerB = Integer.parseInt(arrRangeB[0]);
                 int upperB = Integer.parseInt(arrRangeB[1]);
 
-                if((lowerA <= lowerB && upperA >= upperB) || (lowerB <= lowerA && upperB >= upperA)) {
-                    nrIncludedRanges++;
+                if((lowerA >= lowerB && lowerA <= upperB) ||
+                        (upperA >= lowerB && upperA <= upperB) ||
+                        (lowerB >= lowerA && lowerB <= upperA) ||
+                        (upperB >= lowerA && upperB <= upperA)) {
+                    nrIncludedRanges ++;
                 }
             }
         } catch (IOException exc) {
