@@ -24,8 +24,8 @@ public class Main {
         }
 
         int[][] trees = convertStringListToIntArray(strList);
-        int nrVisibleTrees = getNrOfVisibleTrees(trees);
-        System.out.println("Visible Trees: " + nrVisibleTrees);
+        int highestScenicScore = getHighestScenicScore(trees);
+        System.out.println("Highest Scenic Score: " + highestScenicScore);
     }
 
     private static int[][] convertStringListToIntArray(List<String> strList) {
@@ -38,52 +38,52 @@ public class Main {
         return trees;
     }
 
-    private static int getNrOfVisibleTrees(int[][] trees) {
-        int nrVisibleTrees = 0;
+    private static int getHighestScenicScore(int[][] trees) {
+        int highestScenicScore = 0;
         for(int row = 1; row < trees.length-1; row ++) {
             for(int col = 1; col < trees[row].length-1; col ++) {
-                boolean isVisible = isTreeVisible(trees[row][col], row, col, trees);
-                if(isVisible)
-                    nrVisibleTrees++;
+                int scenicScoreOfTree = getScenicScoreOfTree(row, col, trees);
+                if(scenicScoreOfTree > highestScenicScore)
+                    highestScenicScore = scenicScoreOfTree;
             }
         }
-        nrVisibleTrees += trees.length*2 + trees[0].length*2 - 4; // äußerste Spalten + äußerste Reihen - überscheidende Objekte
-        return nrVisibleTrees;
+        return highestScenicScore;
     }
 
-    private static boolean isTreeVisible(int treeHeight, int row, int col, int[][] trees) {
+    private static int getScenicScoreOfTree(int row, int col, int[][] trees) {
+        int treeHeight = trees[row][col];
         // check top
-        boolean visibleTop = true;
+        int topScore = 0;
         for(int i = row-1; i >= 0; i --) {
+            topScore++;
             if(trees[i][col] >= treeHeight) {
-                visibleTop = false;
                 break;
             }
         }
         // check bottom
-        boolean visibleBottom = true;
+        int bottomScore = 0;
         for(int i = row+1; i < trees.length; i ++) {
+            bottomScore++;
             if(trees[i][col] >= treeHeight) {
-                visibleBottom = false;
                 break;
             }
         }
         // check left
-        boolean visibleLeft = true;
+        int leftScore = 0;
         for(int i = col-1; i >= 0; i --) {
+            leftScore++;
             if(trees[row][i] >= treeHeight) {
-                visibleLeft = false;
                 break;
             }
         }
         // check right
-        boolean visibleRight = true;
+        int rightScore = 0;
         for(int i = col+1; i < trees[row].length; i ++) {
+            rightScore++;
             if(trees[row][i] >= treeHeight) {
-                visibleRight = false;
                 break;
             }
         }
-        return visibleTop || visibleBottom || visibleLeft || visibleRight;
+        return topScore * bottomScore * leftScore * rightScore;
     }
 }
